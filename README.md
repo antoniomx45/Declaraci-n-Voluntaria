@@ -1,1 +1,1 @@
-# Declaraci-n-Voluntaria
+# Declaracion-Voluntaria
