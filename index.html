@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Declaración Voluntaria</title>
+<title>Declaración Voluntaria — Antonio</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono:wght@300;400;500&family=Bebas+Neue&display=swap');
  
@@ -303,6 +303,36 @@ body {
   text-align: center; letter-spacing: 1px;
   border-top: 1px solid var(--border);
   padding-top: 1rem; line-height: 1.8;
+}
+ 
+ 
+/* ── MOBILE ── */
+@media (max-width: 600px) {
+  body { padding: 1rem 0.5rem 3rem; }
+ 
+  #doc { padding: 1.5rem 1.2rem 2.5rem; }
+ 
+  .membrete { flex-direction: column; gap: 0.6rem; }
+  .folio { text-align: left; }
+  .doc-title { font-size: 18px; }
+ 
+  .campo { flex-direction: column; gap: 0.3rem; align-items: flex-start; }
+  .campo-label { min-width: unset; font-size: 10px; }
+  .campo-linea { width: 100%; }
+  .campo-valor { white-space: normal; font-size: 13px; }
+ 
+  .declaracion { font-size: 13px; padding: 1rem; }
+  .declaracion .blank { min-width: 80px; }
+ 
+  .firma-area { gap: 1.5rem; justify-content: center; }
+  .firma-linea { width: 110px; }
+  .firma-nombre { font-size: 15px; }
+ 
+  #stamp1 { top: 1rem; right: 0.8rem; font-size: 10px; padding: 4px 7px; }
+  #stamp2 { bottom: 8rem; left: 0.5rem; font-size: 9px; }
+ 
+  .final-btn { font-size: 10px; padding: 0.6rem 1.2rem; }
+  .nota { font-size: 8px; }
 }
  
 @keyframes fadeIn {
