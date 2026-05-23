@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Declaración Voluntaria — Antonio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono:wght@300;400;500&family=Bebas+Neue&display=swap');
+ 
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+:root {
+  --cream: #f5f0e8;
+  --paper: #faf7f0;
+  --ink: #1a1410;
+  --red: #c0392b;
+  --stamp-red: #c0392b;
+  --faded: #8a7f72;
+  --border: #c8b89a;
+  --accent: #2c5f8a;
+}
+ 
+body {
+  background: #2a2016;
+  min-height: 100vh;
+  font-family: 'IBM Plex Mono', monospace;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 2rem 1rem 4rem;
+  background-image: repeating-linear-gradient(
+    45deg, transparent, transparent 2px,
+    rgba(255,255,255,0.01) 2px, rgba(255,255,255,0.01) 4px
+  );
+}
+ 
+/* ── SOBRE / INTRO ── */
+#intro {
+  position: fixed; inset: 0; z-index: 50;
+  background: #2a2016;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 1.5rem;
+  transition: opacity 0.6s ease;
+}
+ 
+.sobre {
+  width: 260px; height: 180px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+ 
+.sobre:hover { transform: scale(1.04); }
+ 
+.sobre::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(135deg, #d4c9b0 0%, transparent 45%),
+    linear-gradient(225deg, #d4c9b0 0%, transparent 45%);
+  border-radius: 4px;
+}
+ 
+.sobre-label {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px;
+}
+ 
+.sobre-to {
+  font-family: 'Special Elite', cursive;
+  font-size: 13px; color: var(--ink);
+  letter-spacing: 1px;
+}
+ 
+.sobre-name {
+  font-family: 'Special Elite', cursive;
+  font-size: 22px; color: var(--ink);
+}
+ 
+.sello-intro {
+  width: 52px; height: 52px;
+  border: 2px solid var(--red);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Special Elite', cursive;
+  font-size: 7px; color: var(--red);
+  text-align: center; letter-spacing: 0.5px;
+  transform: rotate(-12deg);
+  opacity: 0.85;
+  line-height: 1.3;
+}
+ 
+.intro-hint {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; color: #6b5d4f;
+  letter-spacing: 2px; text-transform: uppercase;
+  animation: blink2 1.8s ease infinite;
+}
+ 
+@keyframes blink2 { 0%,100%{opacity:1} 50%{opacity:0.3} }
+ 
+/* ── DOCUMENTO ── */
+#doc {
+  display: none;
+  width: min(680px, 100%);
+  background: var(--paper);
+  box-shadow: 0 0 0 1px var(--border), 0 20px 60px rgba(0,0,0,0.5);
+  position: relative;
+  padding: 3rem 3.5rem 4rem;
+}
+ 
+/* scan lines texture */
+#doc::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(0,0,0,0.012) 3px, rgba(0,0,0,0.012) 4px
+  );
+}
+ 
+.membrete {
+  border-bottom: 3px double var(--ink);
+  padding-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
+  display: flex; align-items: flex-start; justify-content: space-between;
+}
+ 
+.membrete-left { flex: 1; }
+ 
+.org-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px; color: var(--faded);
+  letter-spacing: 3px; margin-bottom: 4px;
+}
+ 
+.doc-title {
+  font-family: 'Special Elite', cursive;
+  font-size: 22px; color: var(--ink);
+  line-height: 1.2;
+}
+ 
+.folio {
+  font-size: 10px; color: var(--faded);
+  text-align: right; line-height: 1.8;
+}
+ 
+/* ── STAMP ── */
+.stamp {
+  position: absolute;
+  font-family: 'Special Elite', cursive;
+  color: var(--stamp-red);
+  border: 3px solid var(--stamp-red);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 13px;
+  letter-spacing: 2px;
+  opacity: 0;
+  transform: rotate(-18deg);
+  transition: opacity 0.4s, transform 0.4s;
+  pointer-events: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+ 
+.stamp.visible {
+  opacity: 0.75;
+}
+ 
+#stamp1 { top: 2.5rem; right: 2.5rem; }
+#stamp2 { bottom: 6rem; left: 2rem; transform: rotate(8deg); font-size: 11px; }
+ 
+/* ── SECCIONES ── */
+.seccion {
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+ 
+.seccion.show { opacity: 1; transform: translateY(0); }
+ 
+.sec-titulo {
+  font-size: 9px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--faded);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px; margin-bottom: 1rem;
+}
+ 
+/* ── CAMPOS ── */
+.campo {
+  display: flex; align-items: baseline;
+  gap: 0.8rem; margin-bottom: 0.9rem;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+ 
+.campo:hover { background: rgba(0,0,0,0.04); }
+ 
+.campo-label {
+  font-size: 11px; color: var(--faded);
+  min-width: 180px; letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+ 
+.campo-linea {
+  flex: 1; border-bottom: 1px solid var(--border);
+  min-height: 20px; display: flex; align-items: flex-end;
+  padding-bottom: 2px;
+}
+ 
+.campo-valor {
+  font-family: 'Special Elite', cursive;
+  font-size: 14px; color: var(--ink);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  white-space: nowrap;
+  overflow: hidden;
+}
+ 
+.campo.revealed .campo-valor { opacity: 1; }
+ 
+.campo-hint {
+  font-size: 9px; color: var(--border);
+  margin-left: 4px; transition: opacity 0.3s;
+}
+ 
+.campo.revealed .campo-hint { opacity: 0; }
+ 
+/* ── DECLARACION NARRATIVA ── */
+.declaracion {
+  background: rgba(0,0,0,0.03);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 1.2rem 1.5rem;
+  font-family: 'Special Elite', cursive;
+  font-size: 15px; color: var(--ink);
+  line-height: 2;
+}
+ 
+.declaracion .blank {
+  display: inline-block;
+  border-bottom: 1.5px solid var(--ink);
+  min-width: 120px; text-align: center;
+  color: var(--accent); cursor: pointer;
+  transition: background 0.2s;
+  padding: 0 4px;
+}
+ 
+.declaracion .blank:hover { background: rgba(44,95,138,0.08); }
+.declaracion .blank.filled { color: var(--ink); border-color: var(--accent); }
+ 
+/* ── FIRMA ── */
+.firma-area {
+  margin-top: 2.5rem;
+  display: flex; justify-content: flex-end;
+  gap: 4rem;
+}
+ 
+.firma-col { text-align: center; }
+ 
+.firma-linea {
+  width: 160px; border-bottom: 1px solid var(--ink);
+  margin-bottom: 6px;
+}
+ 
+.firma-nombre {
+  font-family: 'Special Elite', cursive;
+  font-size: 18px; color: var(--ink);
+  opacity: 0; transition: opacity 0.6s ease;
+  cursor: pointer;
+}
+ 
+.firma-nombre.show { opacity: 1; }
+.firma-label { font-size: 9px; color: var(--faded); letter-spacing: 2px; }
+ 
+/* ── BOTÓN FINAL ── */
+.final-btn {
+  display: block; margin: 2.5rem auto 0;
+  background: none; border: 1.5px solid var(--ink);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; letter-spacing: 2px;
+  color: var(--ink); padding: 0.7rem 2rem;
+  cursor: pointer; transition: background 0.2s, color 0.2s;
+  opacity: 0; transition: opacity 0.5s ease;
+  text-transform: uppercase;
+}
+ 
+.final-btn.show { opacity: 1; }
+.final-btn:hover { background: var(--ink); color: var(--paper); }
+ 
+/* ── NOTA AL PIE ── */
+.nota {
+  margin-top: 3rem;
+  font-size: 9px; color: var(--faded);
+  text-align: center; letter-spacing: 1px;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem; line-height: 1.8;
+}
+ 
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+</style>
+</head>
+<body>
+ 
+<!-- INTRO SOBRE -->
+<div id="intro">
+  <div class="sobre" onclick="abrirDoc()">
+    <div class="sobre-label">
+      <p class="sobre-to">DOCUMENTO OFICIAL PARA:</p>
+      <p class="sobre-name">Yadira</p>
+      <div class="sello-intro">DEPT.<br>TRANS-<br>PARENCIA</div>
+    </div>
+  </div>
+  <p class="intro-hint">↑ toca para abrir</p>
+</div>
+ 
+<!-- DOCUMENTO -->
+<div id="doc">
+ 
+  <div id="stamp1" class="stamp">Recibido</div>
+  <div id="stamp2" class="stamp">Transparente ✓</div>
+ 
+  <!-- MEMBRETE -->
+  <div class="membrete">
+    <div class="membrete-left">
+      <p class="org-name">Departamento de Transparencia para Yadira</p>
+      <p class="doc-title">Declaración Voluntaria<br>de Actividades</p>
+    </div>
+    <div class="folio">
+      Folio: YDR-001<br>
+      Fecha: 23/05/26<br>
+      Clasificación: PARA SUS OJOS
+    </div>
+  </div>
+ 
+  <!-- DATOS GENERALES -->
+  <div class="seccion" id="s1">
+    <p class="sec-titulo">I. Datos del Declarante</p>
+ 
+    <div class="campo" onclick="reveal(this)">
+      <span class="campo-label">Nombre completo:</span>
+      <span class="campo-linea">
+        <span class="campo-valor">Antonio &nbsp;✓</span>
+        <span class="campo-hint">[ toca ]</span>
+      </span>
+    </div>
+ 
+    <div class="campo" onclick="reveal(this)">
+      <span class="campo-label">Ocupación:</span>
+      <span class="campo-linea">
+        <span class="campo-valor">Programador / pensando en ti</span>
+        <span class="campo-hint">[ toca ]</span>
+      </span>
+    </div>
+ 
+    <div class="campo" onclick="reveal(this)">
+      <span class="campo-label">Nivel de peligrosidad:</span>
+      <span class="campo-linea">
+        <span class="campo-valor">Ninguno. Cero. Nulo. 🙂</span>
+        <span class="campo-hint">[ toca ]</span>
+      </span>
+    </div>
+ 
+    <div class="campo" onclick="reveal(this)">
+      <span class="campo-label">¿Tiene cuentas ocultas?</span>
+      <span class="campo-linea">
+        <span class="campo-valor">Solo la del banco</span>
+        <span class="campo-hint">[ toca ]</span>
+      </span>
+    </div>
+  </div>
+ 
+  <!-- REPORTE DE MOVIMIENTOS -->
+  <div class="seccion" id="s2">
+    <p class="sec-titulo">II. Reporte de Movimientos (últimas 24hrs)</p>
+ 
+    <div class="campo" onclick="reveal(this)">
+      <span class="campo-label">08:00 — Ubicación:</span>
+      <span class="campo-linea">
+        <span class="campo-valor">Despertando, pensé en ti</span>
+        <span class="campo-hint">[ toca ]</span>
+      </span>
+    </div>
+ 
+    <div class="campo" onclick="reveal(this)">
+      <span class="campo-label">12:00 — Actividad:</span>
+      <span class="campo-linea">
+        <span class="campo-valor">Programando. Sin distracciones*</span>
+        <span class="campo-hint">[ toca ]</span>
+      </span>
+    </div>
+ 
+    <div class="campo" onclick="reveal(this)">
+      <span class="campo-label">*Aclaración:</span>
+      <span class="campo-linea">
+        <span class="campo-valor">Sí me distrajiste. Tú tienes la culpa.</span>
+        <span class="campo-hint">[ toca ]</span>
+      </span>
+    </div>
+ 
+    <div class="campo" onclick="reveal(this)">
+      <span class="campo-label">18:00 — Estado emocional:</span>
+      <span class="campo-linea">
+        <span class="campo-valor">Quería hablar contigo</span>
+        <span class="campo-hint">[ toca ]</span>
+      </span>
+    </div>
+ 
+    <div class="campo" onclick="reveal(this)">
+      <span class="campo-label">23:00 — Pensamiento:</span>
+      <span class="campo-linea">
+        <span class="campo-valor">En usted.</span>
+        <span class="campo-hint">[ toca ]</span>
+      </span>
+    </div>
+  </div>
+ 
+  <!-- DECLARACION NARRATIVA -->
+  <div class="seccion" id="s3">
+    <p class="sec-titulo">III. Declaración Narrativa</p>
+    <div class="declaracion">
+      Yo, <span class="blank" onclick="fillBlank(this,'Antonio')">________</span>,
+      declaro voluntariamente que
+      <span class="blank" onclick="fillBlank(this,'a Yadira se le vota la canica')">________</span>,
+      que no tiene nada que esconder
+      <span class="blank" onclick="fillBlank(this,'(excepto que me caes muy bien)')">________</span>,
+      y que presento este documento porque
+      <span class="blank" onclick="fillBlank(this,'le queria hacer algo de lo que hago')">________</span>.
+    </div>
+  </div>
+ 
+  <!-- FIRMA -->
+  <div class="firma-area">
+    <div class="firma-col">
+      <div class="firma-linea"></div>
+      <p class="firma-nombre" id="firma-ant" onclick="showStamps()">Antonio</p>
+      <p class="firma-label">DECLARANTE</p>
+    </div>
+    <div class="firma-col">
+      <div class="firma-linea"></div>
+      <p class="firma-nombre" id="firma-yad">Yadira</p>
+      <p class="firma-label">RECEPTORA / VERIFICADORA</p>
+    </div>
+  </div>
+ 
+  <button class="final-btn" id="final-btn" onclick="location.reload()">
+    ↩ archivar documento
+  </button>
+ 
+  <p class="nota">
+    Este documento es auténtico y fue presentado sin coacción alguna.<br>
+    Válido únicamente ante Yadira. No transferible. No contiene bugs.*<br>
+    *puede contener sentimientos no declarados previamente.
+  </p>
+</div>
+ 
+<script>
+let revealCount = 0;
+ 
+function abrirDoc() {
+  const intro = document.getElementById('intro');
+  intro.style.opacity = '0';
+  intro.style.pointerEvents = 'none';
+  setTimeout(() => {
+    intro.style.display = 'none';
+    document.getElementById('doc').style.display = 'block';
+    setTimeout(() => {
+      ['s1','s2','s3'].forEach((id, i) => {
+        setTimeout(() => document.getElementById(id).classList.add('show'), i * 200);
+      });
+      setTimeout(() => {
+        document.getElementById('firma-ant').classList.add('show');
+        document.getElementById('firma-yad').classList.add('show');
+      }, 700);
+    }, 100);
+  }, 500);
+}
+ 
+function reveal(el) {
+  el.classList.add('revealed');
+  revealCount++;
+  if (revealCount >= 5) {
+    document.getElementById('stamp1').classList.add('visible');
+  }
+  if (revealCount >= 9) {
+    document.getElementById('final-btn').classList.add('show');
+  }
+}
+ 
+function fillBlank(el, text) {
+  el.textContent = text;
+  el.classList.add('filled');
+  el.onclick = null;
+  el.style.cursor = 'default';
+}
+ 
+function showStamps() {
+  document.getElementById('stamp1').classList.add('visible');
+  document.getElementById('stamp2').classList.add('visible');
+  document.getElementById('final-btn').classList.add('show');
+}
+</script>
+</body>
+</html>
